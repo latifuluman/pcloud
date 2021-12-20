@@ -6,7 +6,7 @@ import "net/url"
 func urlBuilder(method string, values url.Values) string {
 	const (
 		apiScheme = "https"
-		apiHost   = "api.pcloud.com"
+		apiHost   = "eapi.pcloud.com"
 	)
 
 	u := url.URL{
