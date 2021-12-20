@@ -7,7 +7,7 @@ import (
 )
 
 // CreateFolder; https://docs.pcloud.com/methods/folder/createfolder.html
-func (c *pCloudClient) CreateFolder(path string, folderID int, name string) error {
+func (c *PCloudClient) CreateFolder(path string, folderID int, name string) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -25,7 +25,7 @@ func (c *pCloudClient) CreateFolder(path string, folderID int, name string) erro
 	return checkResult(c.Client.Get(urlBuilder("createfolder", values)))
 }
 
-// func (c *pCloudClient) ListFolder() error {
+// func (c *PCloudClient) ListFolder() error {
 //  u := (&url.URL{
 //      Scheme:   apiScheme,
 //      Host:     apiHost,
@@ -36,7 +36,7 @@ func (c *pCloudClient) CreateFolder(path string, folderID int, name string) erro
 // }
 
 // RenameFolder; https://docs.pcloud.com/methods/folder/renamefolder.html
-func (c *pCloudClient) RenameFolder(folderID int, path string, topath string) error {
+func (c *PCloudClient) RenameFolder(folderID int, path string, topath string) error {
 	values := url.Values{
 		"auth":   {*c.Auth},
 		"topath": {topath},
@@ -55,7 +55,7 @@ func (c *pCloudClient) RenameFolder(folderID int, path string, topath string) er
 }
 
 // DeleteFolder; https://docs.pcloud.com/methods/folder/deletefolder.html
-func (c *pCloudClient) DeleteFolder(path string, folderID int) error {
+func (c *PCloudClient) DeleteFolder(path string, folderID int) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -73,7 +73,7 @@ func (c *pCloudClient) DeleteFolder(path string, folderID int) error {
 }
 
 // DeleteFolderRecursive; https://docs.pcloud.com/methods/folder/deletefolderrecursive.html
-func (c *pCloudClient) DeleteFolderRecursive(path string, folderID int) error {
+func (c *PCloudClient) DeleteFolderRecursive(path string, folderID int) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
