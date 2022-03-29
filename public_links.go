@@ -2,12 +2,13 @@ package pcloud
 
 import (
 	"errors"
+	"net/http"
 	"net/url"
 	"strconv"
 )
 
 // CreateFolder; https://docs.pcloud.com/methods/folder/createfolder.html
-func (c *PCloudClient) GetFilePubLink(path string, fileID int) error {
+func (c *PCloudClient) GetFilePubLink(path string, fileID int) (*http.Response, error) {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -18,8 +19,9 @@ func (c *PCloudClient) GetFilePubLink(path string, fileID int) error {
 	case fileID >= 0:
 		values.Add("fileid", strconv.Itoa(fileID))
 	default:
-		return errors.New("bad params")
+		return nil, errors.New("bad params")
 	}
+	return c.Client.Get(urlBuilder("getfilepublink", values))
 
-	return checkResult(c.Client.Get(urlBuilder("getfilepublink", values)))
+	//return checkResult()
 }
