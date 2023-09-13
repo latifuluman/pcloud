@@ -15,7 +15,7 @@ import (
 // checksumfile
 
 // DownloadFile; https://docs.pcloud.com/methods/file/downloadfile.html
-func (c *PCloudClient) DownloadFile(urlStr string, path string, folderid int, target string) error {
+func (c *PCloudClient) DownloadFile(urlStr string, path string, folderid int, target string, isEU bool) error {
 	values := url.Values{
 		"url":  {urlStr},
 		"auth": {*c.Auth},
@@ -32,11 +32,11 @@ func (c *PCloudClient) DownloadFile(urlStr string, path string, folderid int, ta
 		values.Add("target", target)
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("downloadfile", values)))
+	return checkResult(c.Client.Get(urlBuilder("downloadfile", values, isEU)))
 }
 
 // UploadFile; https://docs.pcloud.com/methods/file/uploadfile.html
-func (c *PCloudClient) UploadFile(reader io.Reader, path string, folderID int, filename string, noPartial int, progressHash string, renameIfExists int) error {
+func (c *PCloudClient) UploadFile(reader io.Reader, path string, folderID int, filename string, noPartial int, progressHash string, renameIfExists int, isEU bool) error {
 	var b bytes.Buffer
 	w := multipart.NewWriter(&b)
 	values := url.Values{
@@ -77,7 +77,7 @@ func (c *PCloudClient) UploadFile(reader io.Reader, path string, folderID int, f
 		return err
 	}
 
-	req, err := http.NewRequest("POST", urlBuilder("uploadfile", values), &b)
+	req, err := http.NewRequest("POST", urlBuilder("uploadfile", values, isEU), &b)
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func (c *PCloudClient) UploadFile(reader io.Reader, path string, folderID int, f
 }
 
 // CopyFile; https://docs.pcloud.com/methods/file/copyfile.html
-func (c *PCloudClient) CopyFile(fileID int, path string, toFolderID int, toName string, toPath string) error {
+func (c *PCloudClient) CopyFile(fileID int, path string, toFolderID int, toName string, toPath string, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -111,11 +111,11 @@ func (c *PCloudClient) CopyFile(fileID int, path string, toFolderID int, toName 
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("copyfile", values)))
+	return checkResult(c.Client.Get(urlBuilder("copyfile", values, isEU)))
 }
 
 // DeleteFile; https://docs.pcloud.com/methods/file/deletefile.html
-func (c *PCloudClient) DeleteFile(fileID int, path string) error {
+func (c *PCloudClient) DeleteFile(fileID int, path string, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -129,11 +129,11 @@ func (c *PCloudClient) DeleteFile(fileID int, path string) error {
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("deletefile", values)))
+	return checkResult(c.Client.Get(urlBuilder("deletefile", values, isEU)))
 }
 
 // RenameFile; https://docs.pcloud.com/methods/file/renamefile.html
-func (c *PCloudClient) RenameFile(fileID int, path string, toPath string, toFolderID int, toName string) error {
+func (c *PCloudClient) RenameFile(fileID int, path string, toPath string, toFolderID int, toName string, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -157,5 +157,5 @@ func (c *PCloudClient) RenameFile(fileID int, path string, toPath string, toFold
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("renamefile", values)))
+	return checkResult(c.Client.Get(urlBuilder("renamefile", values, isEU)))
 }

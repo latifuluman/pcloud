@@ -28,6 +28,7 @@ var (
 	embeddedFolderByPath string
 	folderNameByID       string
 	folderByPathRename   string
+	isEU                 bool
 
 	rootFodlerID         = 0
 	beforeFilename       string
@@ -51,7 +52,7 @@ func init() {
 
 // TestLogin
 func TestLogin(t *testing.T) {
-	if err := client.Login(os.Getenv("username"), os.Getenv("password")); err != nil {
+	if err := client.Login(os.Getenv("username"), os.Getenv("password"), isEU); err != nil {
 		t.Fatal("can't login", err)
 	}
 }
@@ -65,44 +66,44 @@ func TestAuthkey(t *testing.T) {
 
 // TestCreateFolder
 func TestCreateFolderByPath(t *testing.T) {
-	if err := client.CreateFolder(folderByPath, -1, ""); err != nil {
+	if err := client.CreateFolder(folderByPath, -1, "", isEU); err != nil {
 		t.Error("create folder error;", folderByPath, err)
 	}
-	if err := client.CreateFolder(folderByPath, -1, ""); err == nil {
+	if err := client.CreateFolder(folderByPath, -1, "", isEU); err == nil {
 		t.Error("duplicate create folder error;", folderByPath, err)
 	}
 }
 
 // TestCreateEmbeddedFolderByPath
 func TestCreateEmbeddedFolderByPath(t *testing.T) {
-	if err := client.CreateFolder(embeddedFolderByPath, -1, ""); err != nil {
+	if err := client.CreateFolder(embeddedFolderByPath, -1, "", isEU); err != nil {
 		t.Error("create embedded folder error;", embeddedFolderByPath, err)
 	}
-	if err := client.CreateFolder(embeddedFolderByPath, -1, ""); err == nil {
+	if err := client.CreateFolder(embeddedFolderByPath, -1, "", isEU); err == nil {
 		t.Error("duplicate create embedded folder error;", embeddedFolderByPath)
 	}
 }
 
 // TestCreatefolderNameByID
 func TestCreatefolderNameByID(t *testing.T) {
-	if err := client.CreateFolder("", rootFodlerID, folderNameByID); err != nil {
+	if err := client.CreateFolder("", rootFodlerID, folderNameByID, isEU); err != nil {
 		t.Error("create embedded folder by id;", folderNameByID, err)
 	}
-	if err := client.CreateFolder("", rootFodlerID, folderNameByID); err == nil {
+	if err := client.CreateFolder("", rootFodlerID, folderNameByID, isEU); err == nil {
 		t.Error("duplicate create embedded folder by id;", folderNameByID)
 	}
 }
 
 // TestDeleteFolderByPath
 func TestDeleteFolderByPath(t *testing.T) {
-	if err := client.DeleteFolder(embeddedFolderByPath, -1); err != nil {
+	if err := client.DeleteFolder(embeddedFolderByPath, -1, isEU); err != nil {
 		t.Error("delete folder by path error;", embeddedFolderByPath, err)
 	}
 }
 
 // TestRenameFolderByPath
 func TestRenameFolderByPath(t *testing.T) {
-	if err := client.RenameFolder(-1, folderByPath, folderByPathRename); err != nil {
+	if err := client.RenameFolder(-1, folderByPath, folderByPathRename, isEU); err != nil {
 		t.Error("rename folder error; rename /helloworld to /hello_world", err)
 	}
 	folderByPath = folderByPathRename
@@ -110,7 +111,7 @@ func TestRenameFolderByPath(t *testing.T) {
 
 // TestDeleteFolderRecursiveByPath
 func TestDeleteFolderRecursiveByPath(t *testing.T) {
-	if err := client.DeleteFolderRecursive(folderByPath, -1); err != nil {
+	if err := client.DeleteFolderRecursive(folderByPath, -1, isEU); err != nil {
 		t.Error("delete folder by path recursive error", folderByPath, err)
 	}
 }
@@ -118,21 +119,21 @@ func TestDeleteFolderRecursiveByPath(t *testing.T) {
 // TestUploadFile
 func TestUploadFile(t *testing.T) {
 	buf := bytes.NewBuffer([]byte("test data"))
-	if err := client.UploadFile(buf, "", rootFodlerID, beforeFilename, 0, "", 0); err != nil {
+	if err := client.UploadFile(buf, "", rootFodlerID, beforeFilename, 0, "", 0, isEU); err != nil {
 		t.Error("upload testfile error", beforeFilename, err)
 	}
 }
 
 // TestCopyFile
 func TestCopyFile(t *testing.T) {
-	if err := client.CopyFile(0, "/"+beforeFilename, 0, "", "/"+beforeFilenameCopy); err != nil {
+	if err := client.CopyFile(0, "/"+beforeFilename, 0, "", "/"+beforeFilenameCopy, isEU); err != nil {
 		t.Error("copy testfile error", err)
 	}
 }
 
 // TestRenameFile
 func TestRenameFile(t *testing.T) {
-	if err := client.RenameFile(0, "/"+beforeFilename, "/"+beforeFilenameRename, 0, ""); err != nil {
+	if err := client.RenameFile(0, "/"+beforeFilename, "/"+beforeFilenameRename, 0, "", isEU); err != nil {
 		t.Error("rename file error", beforeFilename, beforeFilenameRename, err)
 	}
 	// beforeFilename = beforeFilenameRename
@@ -140,14 +141,14 @@ func TestRenameFile(t *testing.T) {
 
 // TestDeleteFile
 func TestDeleteFile(t *testing.T) {
-	if err := client.DeleteFile(0, "/"+beforeFilenameCopy); err != nil {
+	if err := client.DeleteFile(0, "/"+beforeFilenameCopy, isEU); err != nil {
 		t.Error("delete file error", err)
 	}
 }
 
 // TestLogout
 func TestLogout(t *testing.T) {
-	if err := client.Logout(); err != nil {
+	if err := client.Logout(isEU); err != nil {
 		t.Error("logout error", err)
 	}
 }

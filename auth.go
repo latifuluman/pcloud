@@ -7,14 +7,14 @@ import (
 )
 
 // Login client; https://docs.pcloud.com/methods/intro/authentication.html
-func (c *PCloudClient) Login(username string, password string) error {
+func (c *PCloudClient) Login(username string, password string, isEU bool) error {
 	values := url.Values{
 		"getauth":  {"1"},
 		"username": {username},
 		"password": {password},
 	}
 
-	buf, err := convertToBuffer(c.Client.Get(urlBuilder("userinfo", values)))
+	buf, err := convertToBuffer(c.Client.Get(urlBuilder("userinfo", values, isEU)))
 	if err != nil {
 		return err
 	}
@@ -38,12 +38,12 @@ func (c *PCloudClient) Login(username string, password string) error {
 }
 
 // Logout client; https://docs.pcloud.com/methods/auth/logout.html
-func (c *PCloudClient) Logout() error {
+func (c *PCloudClient) Logout(isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
 
-	if err := checkResult(c.Client.Get(urlBuilder("logout", values))); err != nil {
+	if err := checkResult(c.Client.Get(urlBuilder("logout", values, isEU))); err != nil {
 		return err
 	}
 
