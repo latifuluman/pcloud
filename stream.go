@@ -15,7 +15,7 @@ import (
 // gettextfile
 
 // GetFileLink; https://docs.pcloud.com/methods/streaming/getfilelink.html
-func (c *PCloudClient) GetFileLink(fileID int, path string, forceDownload int, contentType string, maxSpeed int, skipFilename int) ([]string, error) {
+func (c *PCloudClient) GetFileLink(fileID int, path string, forceDownload int, contentType string, maxSpeed int, skipFilename int, isEU bool) ([]string, error) {
 	var links []string
 
 	values := url.Values{
@@ -44,7 +44,7 @@ func (c *PCloudClient) GetFileLink(fileID int, path string, forceDownload int, c
 		values.Add("skipfilename", strconv.Itoa(skipFilename))
 	}
 
-	resp, err := c.Client.Get(urlBuilder("getfilelink", values))
+	resp, err := c.Client.Get(urlBuilder("getfilelink", values, isEU))
 	if err != nil {
 		return links, err
 	}

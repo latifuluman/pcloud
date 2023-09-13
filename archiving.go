@@ -15,7 +15,7 @@ import (
 // savezipprogress
 
 // GetZip; https://docs.pcloud.com/methods/archiving/getzip.html
-func (c *PCloudClient) GetZip(forceDownload int, filename string, timeOffset string) (io.Reader, error) {
+func (c *PCloudClient) GetZip(forceDownload int, filename string, timeOffset string, isEU bool) (io.Reader, error) {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -30,7 +30,7 @@ func (c *PCloudClient) GetZip(forceDownload int, filename string, timeOffset str
 		values.Add("timeoffset", timeOffset)
 	}
 
-	resp, err := c.Client.Get(urlBuilder("getzip", values))
+	resp, err := c.Client.Get(urlBuilder("getzip", values, isEU))
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (c *PCloudClient) GetZip(forceDownload int, filename string, timeOffset str
 }
 
 // GetZipLink; https://docs.pcloud.com/methods/archiving/getziplink.html
-func (c *PCloudClient) GetZipLink(maxspeed int, forceDownload int, filename string, timeOffset string) ([]string, error) {
+func (c *PCloudClient) GetZipLink(maxspeed int, forceDownload int, filename string, timeOffset string, isEU bool) ([]string, error) {
 	var links []string
 
 	values := url.Values{
@@ -63,7 +63,7 @@ func (c *PCloudClient) GetZipLink(maxspeed int, forceDownload int, filename stri
 		values.Add("timeoffset", timeOffset)
 	}
 
-	resp, err := c.Client.Get(urlBuilder("getziplink", values))
+	resp, err := c.Client.Get(urlBuilder("getziplink", values, isEU))
 	if err != nil {
 		return links, err
 	}

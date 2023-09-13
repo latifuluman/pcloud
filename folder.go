@@ -7,7 +7,7 @@ import (
 )
 
 // CreateFolder; https://docs.pcloud.com/methods/folder/createfolder.html
-func (c *PCloudClient) CreateFolder(path string, folderID int, name string) error {
+func (c *PCloudClient) CreateFolder(path string, folderID int, name string, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -22,7 +22,7 @@ func (c *PCloudClient) CreateFolder(path string, folderID int, name string) erro
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("createfolder", values)))
+	return checkResult(c.Client.Get(urlBuilder("createfolder", values, isEU)))
 }
 
 // func (c *PCloudClient) ListFolder() error {
@@ -36,7 +36,7 @@ func (c *PCloudClient) CreateFolder(path string, folderID int, name string) erro
 // }
 
 // RenameFolder; https://docs.pcloud.com/methods/folder/renamefolder.html
-func (c *PCloudClient) RenameFolder(folderID int, path string, topath string) error {
+func (c *PCloudClient) RenameFolder(folderID int, path string, topath string, isEU bool) error {
 	values := url.Values{
 		"auth":   {*c.Auth},
 		"topath": {topath},
@@ -51,11 +51,11 @@ func (c *PCloudClient) RenameFolder(folderID int, path string, topath string) er
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("renamefolder", values)))
+	return checkResult(c.Client.Get(urlBuilder("renamefolder", values, isEU)))
 }
 
 // DeleteFolder; https://docs.pcloud.com/methods/folder/deletefolder.html
-func (c *PCloudClient) DeleteFolder(path string, folderID int) error {
+func (c *PCloudClient) DeleteFolder(path string, folderID int, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -69,11 +69,11 @@ func (c *PCloudClient) DeleteFolder(path string, folderID int) error {
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("deletefolder", values)))
+	return checkResult(c.Client.Get(urlBuilder("deletefolder", values, isEU)))
 }
 
 // DeleteFolderRecursive; https://docs.pcloud.com/methods/folder/deletefolderrecursive.html
-func (c *PCloudClient) DeleteFolderRecursive(path string, folderID int) error {
+func (c *PCloudClient) DeleteFolderRecursive(path string, folderID int, isEU bool) error {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -87,5 +87,5 @@ func (c *PCloudClient) DeleteFolderRecursive(path string, folderID int) error {
 		return errors.New("bad params")
 	}
 
-	return checkResult(c.Client.Get(urlBuilder("deletefolderrecursive", values)))
+	return checkResult(c.Client.Get(urlBuilder("deletefolderrecursive", values, isEU)))
 }

@@ -8,7 +8,7 @@ import (
 )
 
 // GetFilePubLink; https://docs.pcloud.com/methods/public_links/getfilepublink.html
-func (c *PCloudClient) GetFilePubLink(path string, fileID int) (string, error) {
+func (c *PCloudClient) GetFilePubLink(path string, fileID int, isEU bool) (string, error) {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -21,7 +21,7 @@ func (c *PCloudClient) GetFilePubLink(path string, fileID int) (string, error) {
 	default:
 		return "", errors.New("bad params")
 	}
-	resp, err := c.Client.Get(urlBuilder("getfilepublink", values))
+	resp, err := c.Client.Get(urlBuilder("getfilepublink", values, isEU))
 
 	if err != nil {
 		return "", err
@@ -43,7 +43,7 @@ func (c *PCloudClient) GetFilePubLink(path string, fileID int) (string, error) {
 }
 
 // GetFolderPubLink; https://docs.pcloud.com/methods/public_links/getfolderpublink.html
-func (c *PCloudClient) GetFolderPubLink(path string, fileID int) (string, error) {
+func (c *PCloudClient) GetFolderPubLink(path string, fileID int, isEU bool) (string, error) {
 	values := url.Values{
 		"auth": {*c.Auth},
 	}
@@ -56,7 +56,7 @@ func (c *PCloudClient) GetFolderPubLink(path string, fileID int) (string, error)
 	default:
 		return "", errors.New("bad params")
 	}
-	resp, err := c.Client.Get(urlBuilder("getfolderpublink", values))
+	resp, err := c.Client.Get(urlBuilder("getfolderpublink", values, isEU))
 
 	if err != nil {
 		return "", err

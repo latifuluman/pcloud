@@ -3,11 +3,17 @@ package pcloud
 import "net/url"
 
 // urlBuilder; return url with GET-params
-func urlBuilder(method string, values url.Values) string {
+func urlBuilder(method string, values url.Values, isEU bool) string {
 	const (
 		apiScheme = "https"
-		apiHost   = "eapi.pcloud.com"
 	)
+
+	var apiHost string
+	if isEU == true {
+		apiHost = "eapi.pcloud.com"
+	} else {
+		apiHost = "api.pcloud.com"
+	}
 
 	u := url.URL{
 		Scheme:   apiScheme,
